@@ -34,7 +34,26 @@
 </head>
 <body>
   <h2>Inches ↔ Fractions ↔ mm</h2>
-
+  <div class="form">
+    <div class="row">
+      <div class="label">Decimal (in)</div>
+      <div><input id="decimalIn" inputmode="decimal" placeholder="e.g. 6.425 or .425" /></div>
+    </div>
+    <div class="row">
+      <div class="label">Metric (mm)</div>
+      <div><input id="metricMm" inputmode="decimal" placeholder="e.g. 42" /></div>
+    </div>
+    <div class="row">
+      <div class="label">Cut long (in)</div>
+      <div class="field out" id="cutLong">-</div>
+    </div>
+    <div class="row">
+      <div class="label">Stop Short (in)</div>
+      <div class="field out" id="stopShort">-</div>
+    </div>
+  </div>
+  <p></p>
+  <br>
   <table>
     <tr>
       <td class="label">Decimal (in)</td>
