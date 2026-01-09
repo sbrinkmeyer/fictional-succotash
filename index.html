@@ -1,58 +1,149 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-title" content="Inches ↔ Fractions ↔ mm">
-  <title>Inches ↔ Fractions ↔ mm</title>
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
-    table { border-collapse: collapse; width: 100%; max-width: 560px; }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-title" content="Inches ↔ Fractions ↔ mm" />
+    <title>Inches ↔ Fractions ↔ mm</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        margin: 24px;
+      }
+      /* table { border-collapse: collapse; width: 100%; max-width: 560px; }
     td { border: 1px solid #ccc; padding: 10px 12px; vertical-align: middle; }
-    td.label { width: 170px; font-weight: 600; background: #f7f7f7; }
-    input { width: 100%; font-size: 16px; padding: 8px; box-sizing: border-box; }
-    .out { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 16px; }
-    .hint { color: #555; margin-top: 10px; font-size: 14px; }
-    @media (max-width: 520px) {
-      body { margin: 14px; }
-      td.label { width: 38%;}
-      input { font-size: 16px;}      
-    }
-    @media (max-width: 520px) {
-      table, tr, td { display: block; width: 100%; }
-      tr { margin-bottom: 10px; }
-      td { border-left: none; border-right: none; }
-      td.label {background: none; padding-bottom: 4px;}
-    }
-  </style>
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" type="image/png" href="./favicon.png">
-  <link rel="apple-touch-icon" href="./icon-192.png">
-  
-</head>
-<body>
-  <h2>Inches ↔ Fractions ↔ mm</h2>
-  <div class="form">
-    <div class="row">
-      <div class="label">Decimal (in)</div>
-      <div><input id="decimalIn" inputmode="decimal" placeholder="e.g. 6.425 or .425" /></div>
+    td.label { width: 170px; font-weight: 600; background: #f7f7f7; } */
+      input {
+        width: 100%;
+        font-size: 16px;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+      .out {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 16px;
+      }
+      .hint {
+        color: #555;
+        margin-top: 10px;
+        font-size: 14px;
+      }
+      .form {
+        max-width: 560px;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        border-bottom: none;
+      }
+
+      .row:first-child {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+
+      .row:last-child {
+        border-bottom: 1px solid #ccc;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+
+      .label {
+        width: 170px;
+        font-weight: 600;
+        background: #f7f7f7;
+        padding: 6px 8px;
+        border-radius: 6px;
+      }
+
+      .field {
+        flex: 1;
+        min-width: 0; /* critical: allows flex child to shrink instead of forcing overflow */
+      }
+
+      @media (max-width: 520px) {
+        .row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .label {
+          width: auto;
+          background: none;
+          padding: 0;
+        }
+      }
+
+      /*@media (max-width: 520px) {
+        body {
+          margin: 14px;
+        }
+        td.label {
+          width: 38%;
+        }
+        input {
+          font-size: 16px;
+        }
+      }
+      @media (max-width: 520px) {
+        table,
+        tr,
+        td {
+          display: block;
+          width: 100%;
+        }
+        tr {
+          margin-bottom: 10px;
+        }
+        td {
+          border-left: none;
+          border-right: none;
+        }
+        td.label {
+          background: none;
+          padding-bottom: 4px;
+        }
+      }*/
+    </style>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+  </head>
+  <body>
+    <h2>Inches ↔ Fractions ↔ mm</h2>
+    <div class="form">
+      <div class="row">
+        <div class="label">Decimal (in)</div>
+        <div class="field">
+          <input
+            id="decimalIn"
+            inputmode="decimal"
+            placeholder="e.g. 6.425 or .425"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Metric (mm)</div>
+        <div class="field">
+          <input id="metricMm" inputmode="decimal" placeholder="e.g. 42" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Cut long (in)</div>
+        <div class="field out" id="cutLong">-</div>
+      </div>
+      <div class="row">
+        <div class="label">Stop Short (in)</div>
+        <div class="field out" id="stopShort">-</div>
+      </div>
     </div>
-    <div class="row">
-      <div class="label">Metric (mm)</div>
-      <div><input id="metricMm" inputmode="decimal" placeholder="e.g. 42" /></div>
-    </div>
-    <div class="row">
-      <div class="label">Cut long (in)</div>
-      <div class="field out" id="cutLong">-</div>
-    </div>
-    <div class="row">
-      <div class="label">Stop Short (in)</div>
-      <div class="field out" id="stopShort">-</div>
-    </div>
-  </div>
-  <p></p>
+    <!-- <p></p>
   <br>
   <table>
     <tr>
@@ -72,19 +163,19 @@
       <td class="out" id="stopShort">—</td>
     </tr>
   </table>
+-->
+    <div class="hint">
+      Fractions use denominators: 2, 4, 8, 16, 32 (tape-friendly). mm shown to 3
+      decimals.
+    </div>
 
-  <div class="hint">
-    Fractions use denominators: 2, 4, 8, 16, 32 (tape-friendly). mm shown to 3 decimals.
-  </div>
-
-  <script src="./app.js"></script>
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js");
-    });
-  }
-</script>
-
-</body>
+    <script src="./app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+        })
+      }
+    </script>
+  </body>
 </html>
