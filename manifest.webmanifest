@@ -1,7 +1,8 @@
 {
   "name": "Inches ↔ Fractions ↔ mm",
   "short_name": "Inch Fractions",
-  "start_url": "/",
+  "start_url": "/fictional-succotash/",
+  "scope": "/fictional-succotash/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
