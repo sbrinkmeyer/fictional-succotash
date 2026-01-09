@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-title" content="Inches ↔ Fractions ↔ mm">
   <title>Inches ↔ Fractions ↔ mm</title>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
@@ -15,17 +18,19 @@
     @media (max-width: 520px) {
       body { margin: 14px; }
       td.label { width: 38%;}
-      input { font-size: 16px;}
-      
+      input { font-size: 16px;}      
+    }
+    @media (max-width: 520px) {
+      table, tr, td { display: block; width: 100%; }
+      tr { margin-bottom: 10px; }
+      td { border-left: none; border-right: none; }
+      td.label {background: none; padding-bottom: 4px;}
     }
   </style>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" type="image/png" href="./favicon.png">
   <link rel="apple-touch-icon" href="./icon-192.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Inches ↔ Fractions ↔ mm">
-
+  
 </head>
 <body>
   <h2>Inches ↔ Fractions ↔ mm</h2>
