@@ -1,4 +1,4 @@
-const CACHE = 'inch-frac-v3';
+const CACHE = 'inch-frac-v5';
 const ASSETS = [
     './',
     './index.html',

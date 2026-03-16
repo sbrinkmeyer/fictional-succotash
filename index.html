@@ -47,7 +47,61 @@
         font-weight: 600;
         margin: 0;
         letter-spacing: 0.01em;
+        flex: 1;
       }
+
+      .nav-wrap { position: relative; }
+
+      .burger-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        padding: 6px 4px;
+        border-radius: 6px;
+      }
+      .burger-btn:active { background: rgba(255,255,255,.12); }
+      .burger-btn span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #fff;
+        border-radius: 2px;
+      }
+
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: 0 4px 24px rgba(0,0,0,.18);
+        overflow: hidden;
+        min-width: 190px;
+        z-index: 100;
+      }
+      .nav-menu.open { display: block; }
+
+      .nav-item {
+        display: block;
+        width: 100%;
+        padding: 13px 18px;
+        text-align: left;
+        background: none;
+        border: none;
+        border-bottom: 1px solid var(--border);
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text);
+        cursor: pointer;
+      }
+      .nav-item:last-child { border-bottom: none; }
+      .nav-item:active { background: var(--bg); }
+      .nav-item.active { color: var(--accent); font-weight: 700; }
 
       .page {
         padding: 20px 16px 48px;
@@ -164,6 +218,115 @@
           color: var(--text-muted);
         }
       }
+
+      .add-btn {
+        width: 100%;
+        padding: 11px;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+        letter-spacing: 0.01em;
+      }
+      .add-btn:active { opacity: 0.75; }
+
+      .section-label-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin: 24px 0 8px;
+      }
+      .section-label-row .section-label { margin: 0; }
+
+      .clear-btn {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 3px 10px;
+        cursor: pointer;
+      }
+      .clear-btn:active { background: #fee2e2; color: #ef4444; border-color: #fca5a5; }
+
+      .cut-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .cut-item:last-of-type { border-bottom: none; }
+      .cut-item-info { flex: 1; min-width: 0; }
+      .cut-item-name {
+        font-weight: 600;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cut-item-dims { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+      .cut-item-vals { text-align: right; flex-shrink: 0; }
+      .cut-item-bf {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-weight: 600;
+        color: var(--out-color);
+        font-size: 15px;
+      }
+      .cut-item-cost { font-size: 12px; color: var(--accent); margin-top: 2px; }
+      .del-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 15px;
+        cursor: pointer;
+        padding: 4px 6px;
+        flex-shrink: 0;
+        border-radius: 4px;
+        line-height: 1;
+      }
+      .del-btn:active { color: #ef4444; background: #fef2f2; }
+
+      .cut-empty {
+        padding: 18px 16px;
+        color: var(--text-muted);
+        font-size: 14px;
+        text-align: center;
+      }
+      .cut-total-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: #f0fdf4;
+        border-top: 2px solid var(--border);
+      }
+      .cut-total-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--label-text);
+        flex-shrink: 0;
+      }
+      .cut-total-bf {
+        flex: 1;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--out-color);
+      }
+      .cut-total-cost {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--accent);
+      }
     </style>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/png" href="./favicon.png" />
@@ -173,9 +336,20 @@
     <header>
       <span style="font-size:20px">📐</span>
       <h1>Inch · Fraction · mm</h1>
+      <div class="nav-wrap">
+        <button class="burger-btn" id="burgerBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-menu" id="navMenu">
+          <button class="nav-item active" data-screen="converter">Converter</button>
+          <button class="nav-item" data-screen="boardfeet">Board Feet &amp; List</button>
+        </div>
+      </div>
     </header>
 
     <div class="page">
+
+      <div id="screenConverter">
 
       <div class="section-label">Unit Converter</div>
       <div class="card">
@@ -215,8 +389,18 @@
         </div>
       </div>
 
+      </div><!-- end screenConverter -->
+
+      <div id="screenBoardFeet" style="display:none">
+
       <div class="section-label">Board Feet</div>
       <div class="card">
+        <div class="row">
+          <div class="label">Description</div>
+          <div class="field">
+            <input id="bfDesc" placeholder="optional label" />
+          </div>
+        </div>
         <div class="row">
           <div class="label">Thickness (in)</div>
           <div class="field">
@@ -236,20 +420,81 @@
           </div>
         </div>
         <div class="row">
+          <div class="label">Qty</div>
+          <div class="field">
+            <input id="bfQty" inputmode="decimal" placeholder="1" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="label">$ / bf</div>
+          <div class="field">
+            <input id="bfPrice" inputmode="decimal" placeholder="e.g. 4.50" />
+          </div>
+        </div>
+        <div class="row">
           <div class="label">Board feet</div>
           <div class="field out" id="bfResult">—</div>
         </div>
+        <div class="row" id="bfCostRow" style="display:none">
+          <div class="label">Cost</div>
+          <div class="field out" id="bfCost" style="color:var(--accent)">—</div>
+        </div>
       </div>
+      <button class="add-btn" id="addToListBtn">＋ Add to Cut List</button>
+
+      <div class="section-label-row">
+        <div class="section-label">Cut List</div>
+        <button class="clear-btn" id="clearListBtn">Clear all</button>
+      </div>
+      <div class="card">
+        <div class="cut-empty" id="cutListEmpty">No items yet — add boards above.</div>
+        <div id="cutListItems"></div>
+        <div class="cut-total-row" id="cutListTotalRow" style="display:none">
+          <div class="cut-total-label">Total</div>
+          <div class="cut-total-bf" id="cutListTotalBf">—</div>
+          <div class="cut-total-cost" id="cutListTotalCost"></div>
+        </div>
+      </div>
+
+      </div><!-- end screenBoardFeet -->
 
     </div>
 
     <script src="./app.js"></script>
     <script>
-      if ('serviceWorker' in navigator) {
+      if ('serviceWorker' in navigator && location.protocol !== 'file:') {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js')
         })
       }
+
+      const burgerBtn = document.getElementById('burgerBtn');
+      const navMenu   = document.getElementById('navMenu');
+      const screens   = {
+        converter: document.getElementById('screenConverter'),
+        boardfeet: document.getElementById('screenBoardFeet'),
+      };
+
+      burgerBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        navMenu.classList.toggle('open');
+      });
+
+      document.addEventListener('click', () => navMenu.classList.remove('open'));
+
+      navMenu.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const target = btn.dataset.screen;
+          Object.entries(screens).forEach(([key, el]) => {
+            el.style.display = key === target ? '' : 'none';
+          });
+          navMenu.querySelectorAll('.nav-item').forEach(b =>
+            b.classList.toggle('active', b === btn)
+          );
+          navMenu.classList.remove('open');
+        });
+      });
     </script>
   </body>
 </html>
