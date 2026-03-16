@@ -114,3 +114,44 @@ mmEl.addEventListener("input", () => {
     renderFromMm(mm, true);
     suppress = false;
 });
+
+// Fraction → Decimal
+const fracWholeEl = document.getElementById("fracWhole");
+const fracNumEl = document.getElementById("fracNum");
+const fracDenEl = document.getElementById("fracDen");
+
+function renderFromFraction() {
+    const whole = parseLooseNumber(fracWholeEl.value) || 0;
+    const num = parseLooseNumber(fracNumEl.value);
+    const den = parseLooseNumber(fracDenEl.value);
+    if (!Number.isFinite(num) || !Number.isFinite(den) || den === 0) return;
+    const inches = whole + num / den;
+    inEl.value = inches.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+    renderFromInches(inches, true);
+}
+
+[fracWholeEl, fracNumEl, fracDenEl].forEach(el => {
+    el.addEventListener("input", renderFromFraction);
+});
+
+// Board Foot Calculator
+const bfThickEl = document.getElementById("bfThick");
+const bfWidthEl = document.getElementById("bfWidth");
+const bfLengthEl = document.getElementById("bfLength");
+const bfResultEl = document.getElementById("bfResult");
+
+function calcBoardFeet() {
+    const t = parseLooseNumber(bfThickEl.value);
+    const w = parseLooseNumber(bfWidthEl.value);
+    const l = parseLooseNumber(bfLengthEl.value);
+    if (!Number.isFinite(t) || !Number.isFinite(w) || !Number.isFinite(l)) {
+        bfResultEl.textContent = "—";
+        return;
+    }
+    const bf = (t * w * l) / 12;
+    bfResultEl.textContent = parseFloat(bf.toFixed(3)) + " bf";
+}
+
+[bfThickEl, bfWidthEl, bfLengthEl].forEach(el => {
+    el.addEventListener("input", calcBoardFeet);
+});
