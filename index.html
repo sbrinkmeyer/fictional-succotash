@@ -327,6 +327,84 @@
         font-size: 16px;
         color: var(--accent);
       }
+
+      /* Help modal */
+      .modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 200;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 20px 16px;
+      }
+      .modal-backdrop.open { display: flex; }
+
+      .modal {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: 0 8px 40px rgba(0,0,0,.25);
+        width: 100%;
+        max-width: 520px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        padding: 16px 18px 14px;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: var(--card-bg);
+      }
+
+      .modal-title {
+        flex: 1;
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        color: var(--text-muted);
+        padding: 2px 4px;
+        border-radius: 4px;
+      }
+      .modal-close:active { color: var(--text); }
+
+      .modal-body {
+        padding: 18px 18px 24px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text);
+      }
+      .modal-body h3 {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin: 20px 0 8px;
+      }
+      .modal-body h3:first-child { margin-top: 0; }
+      .modal-body p { margin: 0 0 8px; }
+      .modal-body p:last-child { margin-bottom: 0; }
+      .modal-body code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        background: var(--bg);
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 13px;
+      }
     </style>
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" type="image/png" href="./favicon.png" />
@@ -343,9 +421,41 @@
         <div class="nav-menu" id="navMenu">
           <button class="nav-item active" data-screen="converter">Converter</button>
           <button class="nav-item" data-screen="boardfeet">Board Feet &amp; List</button>
+          <button class="nav-item" id="helpBtn">Help</button>
         </div>
       </div>
     </header>
+
+    <div class="modal-backdrop" id="helpModal">
+      <div class="modal">
+        <div class="modal-header">
+          <p class="modal-title">Help</p>
+          <button class="modal-close" id="helpClose" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <h3>Switching screens</h3>
+          <p>Tap the menu (☰) top-right to flip between <strong>Converter</strong> and <strong>Board Feet &amp; List</strong>.</p>
+
+          <h3>Converter</h3>
+          <p>Type a decimal inch (like <code>6.425</code>) or a millimeter value. The other unit fills in automatically, and you get the nearest fraction above (<em>cut long</em>) and below (<em>stop short</em>) using tape-measure denominators: 1/2 down to 1/32.</p>
+
+          <h3>Fraction → Decimal</h3>
+          <p>Type a fraction across the three boxes &mdash; whole number, numerator, denominator. Leave the whole blank for fractions under an inch. The decimal and mm fields at the top update automatically.</p>
+          <p>Example: leave whole blank, type <code>9</code> and <code>32</code> to get 0.28125".</p>
+
+          <h3>Board Feet</h3>
+          <p>Enter thickness, width, and length to calculate board footage. Add a quantity for multiple identical pieces. Enter a price per board foot to see total cost.</p>
+          <p>Board feet formula: <code>T &times; W &times; L &divide; 12</code></p>
+
+          <h3>Cut List</h3>
+          <p>Fill in the board feet fields, then tap <strong>+ Add to Cut List</strong>. Each piece shows its footage and cost. The total at the bottom adds everything up. Tap ✕ on a row to remove it. <em>Clear all</em> wipes the whole list.</p>
+          <p>The list resets when you close the app.</p>
+
+          <h3>Source</h3>
+          <p><a href="https://github.com/sbrinkmeyer/fictional-succotash" target="_blank" rel="noopener" style="color:var(--accent)">github.com/sbrinkmeyer/fictional-succotash</a></p>
+        </div>
+      </div>
+    </div>
 
     <div class="page">
 
@@ -482,7 +592,7 @@
 
       document.addEventListener('click', () => navMenu.classList.remove('open'));
 
-      navMenu.querySelectorAll('.nav-item').forEach(btn => {
+      navMenu.querySelectorAll('.nav-item[data-screen]').forEach(btn => {
         btn.addEventListener('click', e => {
           e.stopPropagation();
           const target = btn.dataset.screen;
@@ -494,6 +604,19 @@
           );
           navMenu.classList.remove('open');
         });
+      });
+      // Help modal
+      const helpModal = document.getElementById('helpModal');
+      document.getElementById('helpBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        navMenu.classList.remove('open');
+        helpModal.classList.add('open');
+      });
+      document.getElementById('helpClose').addEventListener('click', () => {
+        helpModal.classList.remove('open');
+      });
+      helpModal.addEventListener('click', e => {
+        if (e.target === helpModal) helpModal.classList.remove('open');
       });
     </script>
   </body>
